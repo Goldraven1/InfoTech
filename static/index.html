@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="index.css">
   <title>Info Tech</title>
-  <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
 </head>
-<body>
+<body> 
   <div id="content">
-    <form id="login-form">
-      <input type="text" name="login" placeholder="Логин">
-      <input type="password" name="password" placeholder="Пароль">
-      <button type="submit">Войти</button>
-      <!-- форма регистрации-->
-      <button class="register" type="button" id="register">Регистрация</button>
-    </form>
-  <div>
-    <img src="1.jpg">
-  </div> 
-  
-
-    
-    <script src="index.js"></script>
+    <div id="matrix"></div>
+    <div class="form-container">
+      <h1>Informing Tech</h1>
+      <form id="registration-form">
+        <input type="text" id="username" placeholder="Имя пользователя">
+        <input type="password" id="password" placeholder="Пароль">
+        <button type="submit">Зарегистрироваться</button>
+      </form>
+      <button id="login-button" type="submit">Вход</button>
+    </div>
   </div>
+  <script src="index.js"></script>
 </body>
 </html>

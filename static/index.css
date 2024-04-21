@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: url(1.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-container {
+    max-width: 400px;
+    width: 80%;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.form-container h1 {
+    font-family: 'Roboto', sans-serif;
+    color: lime;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#registration-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+}
+
+#registration-form h2 {
+    color: lime;
+    margin-bottom: 20px;
+}
+
+#registration-form input,
+#registration-form button,
+#login-button {
+    margin-bottom: 10px;
+    padding: 10px;
+    color: lime;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid lime;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 400px;
+}
+
+#registration-form input[type="submit"],
+#registration-form button[type="submit"],
+#login-button {
+    background: lime;
+    color: black;
+}
+
+@media (max-width: 600px) {
+    .form-container {
+        width: 90%;
+    }
+
+    #registration-form input,
+    #registration-form button,
+    #login-button {
+        padding: 15px;
+    }
+}

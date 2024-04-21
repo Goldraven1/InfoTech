@@ -3,4 +3,4 @@ import eel
 eel.init('static')
 
 
-eel.start('index.html', size =(500,500))
+eel.start('index.html', size=(1920, 1080))
