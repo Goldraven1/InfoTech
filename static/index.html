@@ -17,6 +17,28 @@
       <button id="login-button" type="submit">Вход</button>
     </div>
   </div>
-  <script src="index.js"></script>
+  <script type="text/javascript" src="eel.js"></script>
+  <script>
+    document.getElementById('registration-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+    
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+    
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        }).then(response => response.json()).then(data => {
+            if (data.success) {
+                // Регистрация прошла успешно
+            } else {
+                // Обработка ошибки
+            }
+        });
+    });
+    </script>
 </body>
 </html>
