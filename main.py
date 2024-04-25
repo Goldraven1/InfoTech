@@ -1,72 +1,78 @@
 import eel
 import psycopg2
-import bcrypt
+import hashlib
+import secrets
 
 eel.init('static')
 
+# Параметры подключения к базе данных PostgreSQL
+db_config = {
+    "dbname": "InfoTech",
+    "user": "postgres",
+    "password": "123",
+    "host": "localhost",
+    "port": "5432"
+}
+
+# Функция для хеширования пароля с солью
+def hash_password(password, salt):
+    hasher = hashlib.sha256()
+    hasher.update(password.encode('utf-8'))
+    hasher.update(salt.encode('utf-8'))
+    return hasher.hexdigest()
+
 @eel.expose
 def register(username, password):
+    conn = None
+    cur = None
     try:
-        conn = psycopg2.connect(
-            dbname="InfoTech", 
-            user="PostgreSQL15", 
-            password="123", 
-            host="localhost",
-            port=5432
-        )
+        conn = psycopg2.connect(**db_config)
         cur = conn.cursor()
-
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-        cur.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password))
+        salt = secrets.token_hex(16)  # Генерация случайной соли
+        hashed_password = hash_password(password, salt)  # Хеширование пароля с солью
+        cur.execute("INSERT INTO users (username, password, salt) VALUES (%s, %s, %s)", (username, hashed_password, salt))
         conn.commit()
-    except Exception as e:
+        return "Регистрация успешна"
+    except psycopg2.Error as e:
         print(f"Произошла ошибка: {e}")
-        return {'success': False}
+        return "Регистрация не удалась"
     finally:
-        cur.close()
-        conn.close()
-
-    return {'success': True}
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
 
 @eel.expose
 def login(username, password):
+    conn = None
+    cur = None
     try:
-        conn = psycopg2.connect(
-            dbname="InfoTech", 
-            user="PostgreSQL15", 
-            password="123", 
-            host="localhost",
-            port=5432
-        )
+        conn = psycopg2.connect(**db_config)
         cur = conn.cursor()
-
-        cur.execute("SELECT password FROM users WHERE username = %s", (username,))
+        cur.execute("SELECT password, salt FROM users WHERE username = %s", (username,))
         result = cur.fetchone()
-
         if result is None:
-            print("Пользователь не найден")
-            return {'success': False}
-
-        hashed_password = result[0]
-
-        if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
-            print("Вход успешно выполнен")
-            return {'success': True}
+            return "Пользователь не найден"
+        hashed_password, salt = result  # Получение хешированного пароля и соли из базы данных
+        hashed_password_with_salt = hash_password(password, salt)  # Хеширование введенного пароля с солью из базы данных
+        if hashed_password == hashed_password_with_salt:  # Проверка пароля
+            return "Вход выполнен успешно"
         else:
-            print("Неверный пароль")
-            return {'success': False}
-    except Exception as e:
+            return "Неправильный пароль"
+    except psycopg2.Error as e:
         print(f"Произошла ошибка: {e}")
-        return {'success': False}
+        return "Вход не выполнен"
     finally:
-        cur.close()
-        conn.close()
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
 
-@eel.expose
-def workHTML():
-    #переход на другую страницу
-    eel.workHTML(workHTML=True)
-    pass
+try:
+    
+    conn = psycopg2.connect(**db_config)
+    conn.close()
+except psycopg2.OperationalError as e:
+    print(f"Не удалось подключиться к базе данных: {e}")
 
 eel.start('index.html', size=(1920, 1080))

@@ -8,7 +8,7 @@
   <div id="content">
     <div id="matrix"></div>
     <div class="form-container">
-      <h1>Informing Tech</h1>
+      <h1>Informing Technology</h1>
       <form id="registration-form">
         <input type="text" id="username" placeholder="Имя пользователя">
         <input type="password" id="password" placeholder="Пароль">
@@ -18,27 +18,6 @@
     </div>
   </div>
   <script type="text/javascript" src="eel.js"></script>
-  <script>
-    document.getElementById('registration-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-    
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-    
-        fetch('/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, password })
-        }).then(response => response.json()).then(data => {
-            if (data.success) {
-                // Регистрация прошла успешно
-            } else {
-                // Обработка ошибки
-            }
-        });
-    });
-    </script>
+  <script type="text/javascript" src="index.js"></script>
 </body>
 </html>
