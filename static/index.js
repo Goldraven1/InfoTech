@@ -6,8 +6,11 @@ function createSymbol() {
     symbol.classList.add('symbol');
     symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
     symbol.style.left = Math.random() * 100 + 'vw';
-    symbol.style.animationDuration = (Math.random() * 5 + 10) + 's'; 
-    symbol.style.animationDelay = Math.random() * 2 + 's';
+    symbol.style.animationDuration = (Math.random() * 5 + 10) + 's';
+    symbol.style.animationDelay = (Math.random() * 2) + 's';
+    symbol.style.pointerEvents = 'none';
+    symbol.style.userSelect = 'none';
+
     container.appendChild(symbol);
 
     setTimeout(() => {
@@ -16,7 +19,7 @@ function createSymbol() {
 }
 
 function startMatrix() {
-    setInterval(createSymbol, 10); 
+    setInterval(createSymbol, 10);
 }
 
 eel.expose(startMatrix);
