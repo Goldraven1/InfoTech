@@ -1,5 +1,5 @@
-host = "127.0.0.1"
+host = "31.41.155.119"
 user = "postgres"
-db_password = "123"
-db_name = "InfoTech"
+db_password = "postgre"
+db_name = "postgres"
 port = "5432"

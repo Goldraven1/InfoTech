@@ -1,0 +1,14 @@
+  body {
+    background-color: black;
+    overflow: hidden;
+    font-family: 'Courier New', monospace;
+    color: lime;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+

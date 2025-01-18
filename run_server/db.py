@@ -21,7 +21,7 @@ class connectionpostgresql:
             conn = psycopg2.connect(
                 host=host,
                 user=user,
-                password=db_password,  # Используем db_password из config.py
+                password=db_password,  
                 database=db_name,
                 port=port
             )
