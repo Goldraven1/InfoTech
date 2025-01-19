@@ -6,17 +6,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Work</title>
     <link rel="stylesheet" href="work.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <div class="topnav">
-        <button>
-            <a href="work.html">Главная</a>
-        </button>
-        <button>
-            <a href="work.html">Статистика</a>
-        </button>
-        <button id="uploadButton">Загрузка музыки</button>
+    <nav class="topnav">
+        <div class="nav-left">
+            <div class="logo" id="homeButton">
+                <i class="fas fa-music"></i>
+                <span>MusicCharts</span>
+            </div>
+            <button class="nav-btn" id="chartsButton">
+                <i class="fas fa-chart-line"></i>
+                <span>Чарты</span>
+            </button>
+            <button class="nav-btn" id="playlistButton">
+                <i class="fas fa-list"></i>
+                <span>Плейлисты</span>
+            </button>
+        </div>
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Поиск музыки...">
+                <button class="search-clear" id="clearSearch">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <button class="nav-btn" id="uploadButton">
+                <i class="fas fa-upload"></i>
+                <span>Загрузить</span>
+            </button>
+            <button class="nav-btn" id="profileButton">
+                <i class="fas fa-user"></i>
+                <span>Профиль</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="analytics-container">
+        <div class="analytics-card">
+            <h3>Популярные жанры</h3>
+            <canvas id="genresChart"></canvas>
+        </div>
+        <div class="analytics-card">
+            <h3>Статистика прослушиваний</h3>
+            <canvas id="listensChart"></canvas>
+        </div>
+        <div class="analytics-card">
+            <h3>Топ треков</h3>
+            <canvas id="tracksChart"></canvas>
+        </div>
     </div>
+
     <div class="modal" id="modal">
         <div class="modal-content">
             <form id="uploadForm" enctype="multipart/form-data">
@@ -39,6 +82,7 @@
             </form>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript" src="work.js"></script>
     <script type="text/javascript" src="eel.js"></script>
 </body>

@@ -66,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         if(response.success){
                             modal.classList.remove('active');
                             alert(response.message);
-                            // Очищаем форму после успешной загрузки
                             document.getElementById('uploadForm').reset();
                             document.getElementById('cover-preview').innerHTML = '';
                         } else {
@@ -87,9 +86,54 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.classList.remove('active');
         }
     }
+
+    const searchInput = document.getElementById('searchInput');
+    const clearSearch = document.getElementById('clearSearch');
+    const homeButton = document.getElementById('homeButton');
+    const chartsButton = document.getElementById('chartsButton');
+    const playlistButton = document.getElementById('playlistButton');
+    const profileButton = document.getElementById('profileButton');
+
+    // Очистка поиска
+    clearSearch.addEventListener('click', () => {
+        searchInput.value = '';
+        searchInput.focus();
+    });
+
+    // Поиск при вводе
+    searchInput.addEventListener('input', (e) => {
+        const searchQuery = e.target.value;
+        // Здесь добавить логику поиска
+        console.log('Поиск:', searchQuery);
+    });
+
+    // Обработчики навигации
+    homeButton.addEventListener('click', () => {
+        document.querySelector('.analytics-container').style.display = 'grid';
+        initCharts(); // Обновляем графики
+    });
+
+    chartsButton.addEventListener('click', () => {
+        // Показать раздел чартов
+        document.querySelector('.analytics-container').style.display = 'grid';
+    });
+
+    playlistButton.addEventListener('click', () => {
+        // Показать раздел плейлистов
+        document.querySelector('.analytics-container').style.display = 'none';
+        // Здесь добавить отображение плейлистов
+    });
+
+    profileButton.addEventListener('click', () => {
+        // Показать профиль пользователя
+        document.querySelector('.analytics-container').style.display = 'none';
+        // Здесь добавить отображение профиля
+    });
+
+    // Инициализация графиков
+    initCharts();
 });
 
-// Функция для преобразования файла в base64
 function fileToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -98,3 +142,104 @@ function fileToBase64(file) {
         reader.readAsDataURL(file);
     });
 }
+
+function initCharts() {
+    // График жанров
+    const genresCtx = document.getElementById('genresChart').getContext('2d');
+    new Chart(genresCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Джаз', 'Блюз', 'Рок', 'Поп', 'Классика'],
+            datasets: [{
+                data: [30, 20, 25, 15, 10],
+                backgroundColor: [
+                    'rgba(234,30,99, 0.8)',
+                    'rgba(234,30,99, 0.6)',
+                    'rgba(234,30,99, 0.4)',
+                    'rgba(234,30,99, 0.3)',
+                    'rgba(234,30,99, 0.2)'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: 'rgb(234,30,99)'
+                    }
+                }
+            }
+        }
+    });
+
+    // График прослушиваний
+    const listensCtx = document.getElementById('listensChart').getContext('2d');
+    new Chart(listensCtx, {
+        type: 'line',
+        data: {
+            labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+            datasets: [{
+                label: 'Прослушивания',
+                data: [65, 59, 80, 81, 56, 55, 40],
+                borderColor: 'rgb(234,30,99)',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    ticks: { color: 'rgb(234,30,99)' }
+                },
+                x: {
+                    ticks: { color: 'rgb(234,30,99)' }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'rgb(234,30,99)'
+                    }
+                }
+            }
+        }
+    });
+
+    // График топ треков
+    const tracksCtx = document.getElementById('tracksChart').getContext('2d');
+    new Chart(tracksCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Трек 1', 'Трек 2', 'Трек 3', 'Трек 4', 'Трек 5'],
+            datasets: [{
+                label: 'Рейтинг',
+                data: [12, 19, 3, 5, 2],
+                backgroundColor: 'rgba(234,30,99, 0.5)',
+                borderColor: 'rgb(234,30,99)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: 'rgb(234,30,99)' }
+                },
+                x: {
+                    ticks: { color: 'rgb(234,30,99)' }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'rgb(234,30,99)'
+                    }
+                }
+            }
+        }
+    });
+}
+

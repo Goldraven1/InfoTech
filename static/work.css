@@ -1,14 +1,308 @@
+.topnav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to right, rgba(30, 30, 47, 0.98), rgba(30, 30, 47, 0.95));
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid rgb(234,30,99);
+    box-shadow: 0 2px 15px rgba(234,30,99, 0.2);
+    z-index: 1000;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgb(234,30,99);
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.logo i {
+    font-size: 1.8rem;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 2px solid rgb(234,30,99);
+    color: rgb(234,30,99);
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-btn:hover {
+    background: rgba(234,30,99, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(234,30,99, 0.2);
+}
+
+.nav-btn.active {
+    background: rgb(234,30,99);
+    color: #1e1e2f;
+}
+
+.nav-left .nav-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+}
+
+.nav-right .nav-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+}
+
+.search-container {
+    flex: 0 1 500px;
+    margin: 0 auto; /* Центрируем поисковик */
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(44, 62, 80, 0.2);
+    border: 2px solid rgb(234,30,99);
+    border-radius: 25px;
+    padding: 0.3rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-box:focus-within {
+    box-shadow: 0 0 15px rgba(234,30,99, 0.3);
+    background: rgba(44, 62, 80, 0.3);
+}
+
+.search-icon {
+    color: rgb(234,30,99);
+    margin-right: 0.8rem;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    font-size: 1rem;
+    outline: none;
+}
+
+.search-box input::placeholder {
+    color: rgba(234,30,99, 0.6);
+}
+
+.search-clear {
+    background: transparent;
+    border: none;
+    color: rgb(234,30,99);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 0.5rem;
+}
+
+.search-box:focus-within .search-clear {
+    opacity: 0.7;
+}
+
+.search-clear:hover {
+    opacity: 1;
+}
+
+.nav-right {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Обновить стиль body */
 body {
-    background-color: #1e1e2f; /* Темный фон с музыкальными оттенками */
-    overflow: hidden;
+    padding-top: 80px; /* Добавить отступ сверху для фиксированной навигации */
+    background-color: #1e1e2f;
     font-family: 'Courier New', monospace;
-    color: rgb(234,30,99); /* Яркий текст */
+    color: rgb(234,30,99);
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
+}
+
+.nav-left {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 2px solid rgb(234,30,99);
+    color: rgb(234,30,99);
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(234,30,99, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(234,30,99, 0.2);
+}
+
+.nav-btn.active {
+    background: rgb(234,30,99);
+    color: #1e1e2f;
+}
+
+.nav-btn i {
+    font-size: 1.2rem;
+}
+
+.search-container {
+    flex: 0 1 400px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(44, 62, 80, 0.3);
+    border: 2px solid rgb(234,30,99);
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    font-size: 16px;
+    outline: none;
+}
+
+.search-box input::placeholder {
+    color: rgba(234,30,99, 0.6);
+}
+
+.search-btn {
+    background: transparent;
+    border: none;
+    color: rgb(234,30,99);
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    background: rgba(234,30,99, 0.1);
+}
+
+/* Добавить стили для формы */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+form label {
+    color: rgb(234,30,99);
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+form input[type="text"],
+form input[type="file"],
+form select {
+    width: 100%;
+    padding: 12px;
+    background: rgba(44, 62, 80, 0.3);
+    border: 2px solid rgb(234,30,99);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+form input[type="file"] {
+    padding: 8px;
+    cursor: pointer;
+}
+
+form input[type="file"]::-webkit-file-upload-button {
+    background: rgb(234,30,99);
+    border: none;
+    border-radius: 4px;
+    color: #1e1e2f;
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+form select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='rgb(234,30,99)' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px;
+}
+
+form button {
+    background: rgb(234,30,99);
+    color: #1e1e2f;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+form button:hover {
+    background: rgb(207, 27, 87);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(234,30,99, 0.2);
+}
+
+/* Обновленные стили для кнопок отмены */
+#cancel {
+    background: transparent;
+    border: 2px solid rgb(234,30,99);
+    color: rgb(234,30,99);
+}
+
+#cancel:hover {
+    background: rgba(234,30,99, 0.1);
 }
 
 .modal {
@@ -18,46 +312,46 @@ body {
     padding: 50px 30px 30px 30px;
     width: 100%;
     height: 100%;
-    display: none; /* Убедиться, что модальное окно скрыто по умолчанию */
-    background: rgba(30, 30, 47, 0.9); /* Полупрозрачный темный фон */
+    display: none; 
+    background: rgba(30, 30, 47, 0.9); 
     justify-content: center;
     align-items: center;
     z-index: 2;
 }
 
 .modal.active {
-    display: flex; /* Отображение модального окна при активном состоянии */
+    display: flex; 
 }
 
 .modal-content {
-    background: rgba(30, 30, 47, 0.95); /* Темный фон модального окна */
-    border: 2px solid rgb(234,30,99); /* Золотая рамка */
+    background: rgba(30, 30, 47, 0.95);
+    border: 2px solid rgb(234,30,99); 
     border-radius: 10px;
-    padding: 40px 30px 30px 30px; /* Увеличены отступы сверху для кнопки закрытия */
-    box-shadow: 0 0 15px rgb(234,30,99); /* Золотая тень */
+    padding: 40px 30px 30px 30px; 
+    box-shadow: 0 0 15px rgb(234,30,99); 
     width: 90%;
     max-width: 500px;
     display: flex;
     flex-direction: column;
-    color: rgb(234,30,99); /* Яркий текст */
+    color: rgb(234,30,99); 
     position: relative;
 }
 
 #closeButton {
     position: absolute;
-    top: -150px; /* Поднимаем крестик выше */
-    right: -600px; /* Сдвигаем крестик вправо */
+    top: -150px; 
+    right: -600px; 
     background: transparent;
     color: rgb(234,30,99);
     border: none;
     font-size: 24px;
     cursor: pointer;
     transition: color 0.3s;
-    z-index: 10; /* Убедимся, что он над всеми элементами */
+    z-index: 10; 
 }
 
 #closeButton:hover {
-    color: rgb(207, 27, 87); /* Темнее золотой при наведении */
+    color: rgb(207, 27, 87);
 }
 
 #cover-preview {
@@ -76,26 +370,58 @@ body {
     width: 100%;
     margin-bottom: 15px;
     padding: 12px;
-    background: #2c3e50; /* Темный фон полей и кнопок */
-    border: 1px solid rgb(234,30,99); /* Золотая рамка */
+    background: #2c3e50; 
+    border: 1px solid rgb(234,30,99); 
     border-radius: 5px;
-    color: #ffffff; /* Белый текст для видимости */
+    color: #ffffff; 
     font-size: 16px;
     box-sizing: border-box;
     cursor: pointer;
 }
 
 .modal-content input::placeholder {
-    color: #bdc3c7; /* Светло-серый текст в полях ввода */
+    color: #bdc3c7; 
 }
 
 .modal-content button {
-    background: rgb(234,30,99); /* Золотой фон кнопок */
-    color: #1e1e2f; /* Темный текст кнопок */
+    background: rgb(234,30,99); 
+    color: #1e1e2f; 
     transition: background 0.3s;
 }
 
 .modal-content button:hover {
-    background: rgb(234,30,99); /* Темнее золотой при наведении */
+    background: rgb(234,30,99); 
+}
+
+.analytics-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    margin-top: 80px;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.analytics-card {
+    background: rgba(30, 30, 47, 0.95);
+    border: 2px solid rgb(234,30,99);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(234,30,99, 0.1);
+}
+
+.analytics-card h3 {
+    color: rgb(234,30,99);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+canvas {
+    width: 100% !important;
+    height: 300px !important;
 }
 
