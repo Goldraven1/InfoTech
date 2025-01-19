@@ -1,8 +1,8 @@
 body {
-    background-color: black;
+    background-color: #1e1e2f; /* Темный фон с музыкальными оттенками */
     overflow: hidden;
     font-family: 'Courier New', monospace;
-    color: lime;
+    color: rgb(234,30,99); /* Яркий текст */
     position: relative;
     display: flex;
     justify-content: center;
@@ -18,25 +18,21 @@ body {
     top: -100%;
 }
 
-@keyframes fall {
-    0% { opacity: 1; top: -100%; }
-    100% { opacity: .25; top: 100vh; }
-}
 
 .form-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(30, 30, 47, 0.9); /* Полупрозрачный темный фон */
     padding: 20px;
-    border: 2px solid lime;
+    border: 2px solid rgb(234,30,99); /* Золотая рамка */
     border-radius: 10px;
-    box-shadow: 0 0 10px lime;
+    box-shadow: 0 0 10px rgb(234,30,99); /* Золотая тень */
 }
 
 .form-container h2 {
-    color: lime;
+    color: rgb(234,30,99); /* Золотой текст заголовка */
     margin-bottom: 20px;
 }
 
@@ -44,9 +40,9 @@ body {
 .form-container button {
     margin-bottom: 10px;
     padding: 10px;
-    color: lime;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid lime;
+    color: #1e1e2f; /* Темный текст */
+    background: rgba(241, 196, 15, 0.1); /* Полупрозрачный золотой фон */
+    border: 1px solid rgb(234,30,99); /* Золотая рамка */
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
@@ -54,18 +50,31 @@ body {
 
 .form-container input[type="submit"],
 .form-container button[type="submit"] {
-    background: lime;
-    color: black;
+    background: rgb(234,30,99); /* Золотой фон кнопок */
+    color: #1e1e2f; /* Темный текст кнопок */
 }
 
 .form-container input[type="text"],
 .form-container input[type="password"] {
     text-align: center;
     width: 95%;
+    background: rgba(30, 30, 47, 0.8); /* Темный фон полей ввода */
+    color: rgb(234,30,99); /* Яркий текст в полях ввода */
 }
 
-@media (max-width: 600px) {
-    .form-container {
-        width: 90%;
-    }
-}
+.profile-picture {
+    opacity: 0.75;
+    height: 250px;
+    width: 250px;
+    position: relative;
+    overflow: hidden;
+  
+    /* default image */
+    background: url('https://qph.cf2.quoracdn.net/main-qimg-f32f85d21d59a5540948c3bfbce52e68');
+  
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 0 8px 6px -6px black;
+  }
+  

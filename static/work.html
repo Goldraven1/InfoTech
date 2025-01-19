@@ -7,7 +7,7 @@
     <title>Work</title>
     <link rel="stylesheet" href="work.css">
 </head>
-<body background=>
+<body>
     <div class="topnav">
         <button>
             <a href="work.html">Главная</a>
@@ -15,9 +15,30 @@
         <button>
             <a href="work.html">Статистика</a>
         </button>
-        <button>
-            <a href="work.html">Загрузка музыки</a>
-      </div>
-      
+        <button id="uploadButton">Загрузка музыки</button>
+    </div>
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <label for="cover-file">Обложка (JPG, PNG):</label>
+            <input type="file" id="cover-file" accept="image/*">
+            <div id="cover-preview"></div>
+            <input type="text" id="music-name" name="student_name">
+            <select name="music" id="music-select">
+                <option value="">Выберите тип музыки</option>
+                <option value="dog">Блюз</option>
+                <option value="cat">Вокальная музыка</option>
+                <option value="hamster">Джаз</option>
+                <option value="parrot">Джангл</option>
+                <option value="spider"> Инструментальная музыка</option>
+                <option value="goldfish">Кантри</option>
+              </select>
+            <label for="music-file">Файл (MP3, MP4):</label>
+            <input type="file" id="music-file" accept="audio/mp3,video/mp4">
+            <button id="upload">Загрузить</button>
+            <button id="cancel">Сохранить</button>
+        </div>
+    </div>
+    <script type="text/javascript" src="work.js"></script>
+    <script type="text/javascript" src="eel.js"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
-  body {
-    background-color: black;
+body {
+    background-color: #1e1e2f; /* Темный фон с музыкальными оттенками */
     overflow: hidden;
     font-family: 'Courier New', monospace;
-    color: lime;
+    color: rgb(234,30,99); /* Яркий текст */
     position: relative;
     display: flex;
     justify-content: center;
@@ -11,4 +11,91 @@
     margin: 0;
 }
 
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 50px 30px 30px 30px;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background: rgba(30, 30, 47, 0.9); /* Полупрозрачный темный фон */
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: rgba(30, 30, 47, 0.95); /* Темный фон модального окна */
+    border: 2px solid rgb(234,30,99); /* Золотая рамка */
+    border-radius: 10px;
+    padding: 40px 30px 30px 30px; /* Увеличены отступы сверху для кнопки закрытия */
+    box-shadow: 0 0 15px rgb(234,30,99); /* Золотая тень */
+    width: 90%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    color: rgb(234,30,99); /* Яркий текст */
+    position: relative;
+}
+
+#closeButton {
+    position: absolute;
+    top: -150px; /* Поднимаем крестик выше */
+    right: -600px; /* Сдвигаем крестик вправо */
+    background: transparent;
+    color: rgb(234,30,99);
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+    z-index: 10; /* Убедимся, что он над всеми элементами */
+}
+
+#closeButton:hover {
+    color: rgb(207, 27, 87); /* Темнее золотой при наведении */
+}
+
+#cover-preview {
+    margin-bottom: 15px;
+    text-align: center;
+}
+#cover-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content button {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: #2c3e50; /* Темный фон полей и кнопок */
+    border: 1px solid rgb(234,30,99); /* Золотая рамка */
+    border-radius: 5px;
+    color: #ffffff; /* Белый текст для видимости */
+    font-size: 16px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.modal-content input::placeholder {
+    color: #bdc3c7; /* Светло-серый текст в полях ввода */
+}
+
+.modal-content button {
+    background: rgb(234,30,99); /* Золотой фон кнопок */
+    color: #1e1e2f; /* Темный текст кнопок */
+    transition: background 0.3s;
+}
+
+.modal-content button:hover {
+    background: rgb(234,30,99); /* Темнее золотой при наведении */
+}
 
