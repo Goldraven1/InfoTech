@@ -33,55 +33,42 @@ window.onclick = function(e) {
     }
 }
 
-const uploadBtn = document.getElementById('upload');
-uploadBtn.addEventListener('click', () => {
-    const fileMusic = document.getElementById('music-file').files[0];
-    const fileCover = document.getElementById('cover-file').files[0];
-    if (fileMusic && fileCover) {
-        console.log(`Музыка/Видео: ${fileMusic.name}, Обложка: ${fileCover.name}`);
-        // Здесь реализуйте загрузку на сервер
+const uploadButton = document.getElementById('upload');
+
+uploadButton.addEventListener('click', function(){
+    const musicFile = document.getElementById('music-file').files[0];
+    const coverFile = document.getElementById('cover-file').files[0];
+    const musicName = document.getElementById('music-name').value;
+    const musicType = document.getElementById('music-select').value;
+
+    if(musicFile && coverFile && musicName && musicType){
         const formData = new FormData();
-        formData.append('music', fileMusic);
-        formData.append('cover', fileCover);
+        formData.append('music', musicFile);
+        formData.append('cover', coverFile);
+        formData.append('name', musicName);
+        formData.append('type', musicType);
+
         fetch('/upload', {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
-            console.log('Успех:', data);
-            modal.classList.remove('active');
+            if(data.success){
+                modal.classList.remove('active');
+                alert(data.message);
+            } else {
+                throw new Error(data.error);
+            }
         })
-        .catch((error) => {
+        .catch(error => {
             console.error('Ошибка:', error);
-        });
-
-        if (coverPreview.innerHTML === '') {
-            alert('Пожалуйста, загрузите обложку.');
-        }
-    }
-});
-
-const saveBtn = document.getElementById('cancel');
-saveBtn.addEventListener('click', () => {
-    const musicName = document.getElementById('music-name').value;
-    const musicType = document.getElementById('music-select').value;
-    if (musicName && musicType) {
-        // Здесь реализуйте сохранение данных на сервер
-        fetch('/save', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name: musicName, type: musicType })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Сохранено:', data);
-            modal.classList.remove('active');
-        })
-        .catch((error) => {
-            console.error('Ошибка:', error);
+            alert(`Ошибка при загрузке файлов: ${error.message}`);
         });
     } else {
         alert('Пожалуйста, заполните все поля.');
