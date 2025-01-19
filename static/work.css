@@ -18,7 +18,7 @@ body {
     padding: 50px 30px 30px 30px;
     width: 100%;
     height: 100%;
-    display: none;
+    display: none; /* Убедиться, что модальное окно скрыто по умолчанию */
     background: rgba(30, 30, 47, 0.9); /* Полупрозрачный темный фон */
     justify-content: center;
     align-items: center;
@@ -26,7 +26,7 @@ body {
 }
 
 .modal.active {
-    display: flex;
+    display: flex; /* Отображение модального окна при активном состоянии */
 }
 
 .modal-content {
