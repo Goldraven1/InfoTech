@@ -4,7 +4,8 @@ from db import connectionpostgresql
 
 db = connectionpostgresql()
 
-eel.init('static')
+
+eel.init('static', allowed_extensions=['.js', '.html', '.css', '.mp3', '.jpg', '.png'])
 routes = Routes()
 
-eel.start('index.html', size=(1920, 1080))
+eel.start('work.html', size=(2500, 2000), mode='none', port=8080)

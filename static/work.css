@@ -143,12 +143,7 @@ body {
     color: rgb(234,30,99);
     margin: 0;
     min-height: 100vh;
-    overflow: hidden;
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
 }
 
 .nav-left {
@@ -394,7 +389,7 @@ form button:hover {
 }
 
 .analytics-container {
-    display: grid;
+    display: none;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     padding: 2rem;
@@ -423,5 +418,551 @@ form button:hover {
 canvas {
     width: 100% !important;
     height: 300px !important;
+}
+
+.music-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.top-music-section {
+    background: rgba(30, 30, 47, 0.95);
+    border: 2px solid rgb(234,30,99);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(234,30,99, 0.1);
+    padding: 20px;
+}
+
+.top-music-section h2 {
+    color: rgb(234,30,99);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.top-tracks {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem;
+    overflow-x: auto; /* Добавляем горизонтальный скроллинг */
+    scrollbar-width: thin;
+    scrollbar-color: rgb(234,30,99) rgba(234,30,99, 0.1);
+}
+
+.track-card {
+    position: relative;
+    flex: 0 1 250px;
+    text-align: center;
+    padding: 1rem;
+    background: rgba(44, 62, 80, 0.3);
+    border: 1px solid rgb(234,30,99);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    width: 180px;  /* Уменьшаем размер карточки */
+    margin: 10px;
+    padding: 10px;
+}
+
+.track-card.featured {
+    border-width: 2px;
+    box-shadow: 0 0 20px rgba(234,30,99, 0.3);
+    transform: scale(1.05);
+    border: 3px solid rgb(234,30,99);
+    box-shadow: 0 0 25px rgba(234,30,99, 0.4);
+}
+
+.track-image {
+    position: relative;
+    width: 160px;  /* Уменьшаем размер изображения */
+    height: 160px;
+    margin: 0 auto 1rem;
+    cursor: pointer;
+}
+
+.track-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(30, 30, 47, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 4px;
+}
+
+.play-overlay i {
+    font-size: 3rem;
+    color: rgb(234,30,99);
+}
+
+.track-image:hover .play-overlay {
+    opacity: 1;
+}
+
+.audio-player {
+    width: 160px;  /* Уменьшаем размер плеера */
+    margin-top: 1rem;
+    height: 25px;
+}
+
+.audio-player::-webkit-media-controls-panel {
+    background: rgba(44, 62, 80, 0.3);
+}
+
+.audio-player::-webkit-media-controls-current-time-display,
+.audio-player::-webkit-media-controls-time-remaining-display {
+    color: rgb(234,30,99);
+}
+
+.track-card h3 {
+    color: rgb(234,30,99);
+    margin: 0.5rem 0;
+}
+
+.track-card p {
+    color: rgba(234,30,99, 0.7);
+}
+
+.genres-section {
+    margin-top: 3rem;
+}
+
+.genres-section h2 {
+    color: rgb(234,30,99);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.genre-block {
+    background: rgba(30, 30, 47, 0.95);
+    border: 2px solid rgb(234,30,99);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.genre-block h3 {
+    color: rgb(234,30,99);
+    margin-bottom: 1rem;
+}
+
+.tracks-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.music-container {
+    padding: 2rem;
+    margin-top: 80px;
+}
+
+.genre-section {
+    margin-bottom: 2rem;
+}
+
+.genre-section h2 {
+    color: rgb(234,30,99);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.tracks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    overflow-y: auto; /* Добавляем вертикальный скроллинг */
+}
+
+.track-card {
+    background: rgba(30, 30, 47, 0.95);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.track-card:hover {
+    transform: translateY(-5px);
+}
+
+.track-image {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.track-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.track-card:hover .play-overlay {
+    opacity: 1;
+}
+
+.track-info h3 {
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.track-info p {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(234,30,99, 0.2);
+    border-radius: 2px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.progress {
+    width: 0%;
+    height: 100%;
+    background: rgb(234,30,99);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.controls button {
+    background: none;
+    border: none;
+    color: rgb(234,30,99);
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+
+.controls button:hover {
+    transform: scale(1.1);
+}
+
+.track-card.playing {
+    border: 2px solid rgb(234,30,99);
+    box-shadow: 0 0 15px rgba(234,30,99,0.2);
+}
+
+.music-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.track-card {
+    width: 180px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.track-image {
+    width: 160px;
+    height: 160px;
+}
+
+.audio-player {
+    width: 160px;
+    height: 30px;
+}
+
+.track-info {
+    padding: 0.5rem;
+}
+
+.track-info h3 {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+
+.track-info p {
+    font-size: 0.8rem;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+.controls button {
+    padding: 0.3rem;
+}
+
+.custom-player {
+    width: 100%;
+    padding: 10px;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.volume-slider {
+    width: 80px;
+    height: 4px;
+    -webkit-appearance: none;
+    background: rgba(234,30,99, 0.2);
+    border-radius: 2px;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: rgb(234,30,99);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.main-container {
+    padding: 2rem;
+    margin-top: 80px;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.genre-section {
+    position: relative;
+    padding: 2rem 3.5rem; /* Увеличиваем padding для кнопок скролла */
+    margin-bottom: 3rem;
+    background: rgba(30, 30, 47, 0.95);
+    border: 2px solid rgb(234,30,99);
+    border-radius: 12px;
+}
+
+.genre-section h2 {
+    color: rgb(234,30,99);
+    margin-bottom: 1.5rem;
+    padding-left: 1rem;
+}
+
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(234,30,99, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(234,30,99);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.scroll-btn:hover {
+    background: rgba(234,30,99, 0.3);
+}
+
+.scroll-btn.left {
+    left: 10px;
+}
+
+.scroll-btn.right {
+    right: 10px;
+}
+
+.tracks-grid {
+    display: flex;
+    gap: 1rem;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    padding: 1rem;
+}
+
+.track-card {
+    flex: 0 0 200px; /* Фиксированная ширина карточки */
+    margin-right: 1rem;
+    background: rgba(44, 62, 80, 0.3);
+    border: 1px solid rgb(234,30,99);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.custom-player {
+    width: 100%;
+    padding: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(234,30,99, 0.2);
+    border-radius: 2px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.progress {
+    width: 0%;
+    height: 100%;
+    background: rgb(234,30,99);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.controls button {
+    background: none;
+    border: none;
+    color: rgb(234,30,99);
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+
+.controls button:hover {
+    transform: scale(1.1);
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.volume-slider {
+    width: 80px;
+    height: 4px;
+    -webkit-appearance: none;
+    background: rgba(234,30,99, 0.2);
+    border-radius: 2px;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: rgb(234,30,99);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.track-card.featured {
+    border: 3px solid rgb(234,30,99);
+    box-shadow: 0 0 25px rgba(234,30,99, 0.4);
+    transform: scale(1.05);
+}
+
+.top-music-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background: rgba(30, 30, 47, 0.95);
+    border-radius: 12px;
+}
+
+.add-to-playlist {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(234,30,99, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(234,30,99);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 11;
+}
+
+.add-to-playlist:hover {
+    background: rgba(234,30,99, 0.4);
+    transform: scale(1.1);
+}
+
+.playlist-section {
+    display: none;
+    padding: 2rem;
+    margin-top: 80px;
+}
+
+/* Скрываем аналитику по умолчанию */
+.analytics-container {
+    display: none;
+}
+
+.top-tracks::-webkit-scrollbar,
+.tracks-grid::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.top-tracks::-webkit-scrollbar-track,
+.tracks-grid::-webkit-scrollbar-track {
+    background: rgba(234,30,99, 0.1);
+    border-radius: 4px;
+}
+
+.top-tracks::-webkit-scrollbar-thumb,
+.tracks-grid::-webkit-scrollbar-thumb {
+    background: rgb(234,30,99);
+    border-radius: 4px;
 }
 
