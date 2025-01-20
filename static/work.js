@@ -31,6 +31,14 @@ function setupUIElements() {
     if(uploadButton) {
         uploadButton.addEventListener('click', handleUpload);
     }
+    
+    if(modal) {
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    }
 }
 
 async function loadMusic() {
@@ -609,6 +617,3 @@ setInterval(fetchActiveUsers, 10000);
 
 
 fetchActiveUsers();
-
-
-
