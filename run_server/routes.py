@@ -308,3 +308,32 @@ def upload_files(music_data, cover_data, name, type_):
     except Exception as e:
         print(f"Ошибка при загрузке файлов: {str(e)}")
         return {"success": False, "error": str(e)}
+
+@eel.expose
+def search_tracks(query):
+    try:
+        query = query.lower()
+        all_tracks = []
+        for root, dirs, files in os.walk(UPLOAD_FOLDER):
+            if 'metadata.json' in files:
+                with open(os.path.join(root, 'metadata.json'), 'r', encoding='utf-8') as f:
+                    metadata = json.load(f)
+                    if query in metadata['name'].lower() or query in metadata['type'].lower():
+                        relative_path = os.path.relpath(root, UPLOAD_FOLDER)
+                        music_path = quote(f"/static/uploads/{relative_path}/{metadata['music_file']}")
+                        cover_path = quote(f"/static/uploads/{relative_path}/{metadata['cover_file']}")
+                        track_id = len(all_tracks)
+                        total_listening_minutes = round(load_listening_stats().get(str(track_id), 0) / 60, 1)
+                        track_data = {
+                            'id': track_id,
+                            'name': metadata['name'],
+                            'type': metadata['type'],
+                            'music_file': music_path,
+                            'cover_file': cover_path,
+                            'plays': total_listening_minutes
+                        }
+                        all_tracks.append(track_data)
+        return {'success': True, 'tracks': all_tracks}
+    except Exception as e:
+        print(f"Error in search_tracks: {str(e)}")
+        return {'success': False, 'error': str(e)}

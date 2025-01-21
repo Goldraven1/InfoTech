@@ -223,6 +223,44 @@ document.addEventListener('click', (e) => {
 });
 
 
+async function performSearch(query) {
+    try {
+        const response = await eel.search_tracks(query)();
+        if (response.success) {
+            displaySearchResults(response.tracks);
+        } else {
+            alert(`Ошибка поиска: ${response.error}`);
+        }
+    } catch (error) {
+        console.error('Ошибка выполнения поиска:', error);
+    }
+}
+
+function displaySearchResults(tracks) {
+    const mainContainer = document.querySelector('.main-container');
+    const analyticsContainer = document.querySelector('.analytics-container');
+    
+    mainContainer.innerHTML = '';
+    analyticsContainer.style.display = 'none';
+
+    if (tracks.length === 0) {
+        mainContainer.innerHTML = '<p>Ничего не найдено.</p>';
+        return;
+    }
+
+    const searchSection = document.createElement('div');
+    searchSection.className = 'search-results-section';
+    searchSection.innerHTML = `
+        <h2>Результаты поиска</h2>
+        <div class="tracks-grid">
+            ${tracks.map(track => createTrackCard(track)).join('')}
+        </div>
+    `;
+    
+    mainContainer.appendChild(searchSection);
+    setupCustomPlayers();
+}
+
 function setupNavigation() {
     const searchInput = document.getElementById('searchInput');
     const clearSearch = document.getElementById('clearSearch');
@@ -235,12 +273,17 @@ function setupNavigation() {
     clearSearch.addEventListener('click', () => {
         searchInput.value = '';
         searchInput.focus();
+        loadMusic();
     });
 
 
     searchInput.addEventListener('input', (e) => {
-        const searchQuery = e.target.value;
-        console.log('Поиск:', searchQuery);
+        const searchQuery = e.target.value.trim();
+        if (searchQuery.length > 0) {
+            performSearch(searchQuery);
+        } else {
+            loadMusic();
+        }
     });
 
 
