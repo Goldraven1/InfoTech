@@ -356,6 +356,8 @@ function setupCustomPlayers() {
     document.querySelectorAll('.track-card').forEach(card => {
         const audio = card.querySelector('audio');
         const playBtn = card.querySelector('.play-btn');
+        const prevBtn = card.querySelector('.prev-btn');
+        const nextBtn = card.querySelector('.next-btn');
         const volumeSlider = card.querySelector('.volume-slider');
         const progress = card.querySelector('.progress');
         const trackId = card.dataset.trackId;
@@ -365,7 +367,6 @@ function setupCustomPlayers() {
                 audio.volume = e.target.value / 100;
             });
         }
-        
 
         playBtn.addEventListener('click', () => {
             if (audio.paused) {
@@ -388,18 +389,42 @@ function setupCustomPlayers() {
             playBtn.innerHTML = '<i class="fas fa-play"></i>';
             card.classList.remove('playing');
         });
-        
+
         progress.parentElement.addEventListener('click', (e) => {
             const rect = progress.parentElement.getBoundingClientRect();
             const pos = (e.clientX - rect.left) / rect.width;
             audio.currentTime = pos * audio.duration;
         });
-        
+
         audio.addEventListener('timeupdate', () => {
             const percent = (audio.currentTime / audio.duration) * 100;
             progress.style.width = percent + '%';
         });
 
+        prevBtn.addEventListener('click', () => {
+            audio.currentTime = Math.max(audio.currentTime - 30, 0);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            audio.currentTime = Math.min(audio.currentTime + 30, audio.duration);
+        });
+
+        card.querySelector('.track-image').addEventListener('click', () => {
+            if (audio.paused) {
+                pauseAllPlayers();
+                audio.play().then(() => {
+                    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    card.classList.add('playing');
+                    updateListeningTime(trackId, audio);
+                }).catch(error => {
+                    console.error('Playback error:', error);
+                });
+            } else {
+                audio.pause();
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                card.classList.remove('playing');
+            }
+        });
 
         const addToPlaylistBtn = card.querySelector('.add-to-playlist');
         if (addToPlaylistBtn) {
@@ -536,6 +561,10 @@ function fileToBase64(file) {
     });
 }
 
+let genresChartInstance = null;
+let listensChartInstance = null;
+let tracksChartInstance = null;
+
 async function initCharts() {
     try {
         const genresResponse = await eel.get_tracks_by_genre()();
@@ -544,7 +573,10 @@ async function initCharts() {
             const genreCounts = Object.values(genresResponse.genres).map(tracks => tracks.length);
             
             const genresCtx = document.getElementById('genresChart').getContext('2d');
-            new Chart(genresCtx, {
+            if (genresChartInstance) {
+                genresChartInstance.destroy();
+            }
+            genresChartInstance = new Chart(genresCtx, {
                 type: 'bar',
                 data: {
                     labels: genres,
@@ -572,7 +604,10 @@ async function initCharts() {
             const plays = tracks.map(track => track.plays); 
 
             const listensCtx = document.getElementById('listensChart').getContext('2d');
-            new Chart(listensCtx, {
+            if (listensChartInstance) {
+                listensChartInstance.destroy();
+            }
+            listensChartInstance = new Chart(listensCtx, {
                 type: 'line',
                 data: {
                     labels: trackNames,
@@ -598,10 +633,13 @@ async function initCharts() {
         if (topTracksResponse.success) {
             const topTracks = topTracksResponse.tracks;
             const topTrackNames = topTracks.map(track => track.name);
-            const topPlays = topTracks.map(track => track.plays); // plays уже в минутах
+            const topPlays = topTracks.map(track => track.plays); 
 
             const tracksCtx = document.getElementById('tracksChart').getContext('2d');
-            new Chart(tracksCtx, {
+            if (tracksChartInstance) {
+                tracksChartInstance.destroy();
+            }
+            tracksChartInstance = new Chart(tracksCtx, {
                 type: 'pie',
                 data: {
                     labels: topTrackNames,

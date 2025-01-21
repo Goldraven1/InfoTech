@@ -38,7 +38,7 @@ def normalize_filename(filename):
     # Декодируем URL-encoded строку и нормализуем Unicode
     filename = unquote(filename)
     filename = normalize('NFKD', filename)
-    # Оставляем буквы, цифры, пробелы и некоторые знаки
+    # Оставляем буквы, цифры, пробелы и некоторые знаки, исключая символ #
     filename = re.sub(r'[^\w\s-а-яА-ЯёЁ.]', '', filename)
     return filename.strip()
 
