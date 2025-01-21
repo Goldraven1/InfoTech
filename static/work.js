@@ -83,7 +83,7 @@ async function createTopTracksSection() {
     const response = await eel.get_top_tracks(3)();
     if (!response.success) return '';
 
-    const topTracks = response.tracks.filter(track => track.plays > 0);
+    const topTracks = response.tracks;
     if (topTracks.length === 0) return '';
 
     const section = document.createElement('div');
@@ -373,7 +373,7 @@ function setupCustomPlayers() {
                 audio.play().then(() => {
                     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
                     card.classList.add('playing');
-                    updatePlayCount(trackId);
+                    updateListeningTime(trackId, audio);
                 }).catch(error => {
                     console.error('Playback error:', error);
                 });
@@ -382,6 +382,11 @@ function setupCustomPlayers() {
                 playBtn.innerHTML = '<i class="fas fa-play"></i>';
                 card.classList.remove('playing');
             }
+        });
+
+        audio.addEventListener('ended', () => {
+            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            card.classList.remove('playing');
         });
         
         progress.parentElement.addEventListener('click', (e) => {
@@ -408,6 +413,17 @@ function setupCustomPlayers() {
                     alert('Трек добавлен в плейлист!');
                 }
             });
+        }
+    });
+}
+
+async function updateListeningTime(trackId, audio) {
+    let lastTime = 0;
+    audio.addEventListener('timeupdate', () => {
+        const currentTime = Math.floor(audio.currentTime);
+        if (currentTime > lastTime) {
+            lastTime = currentTime;
+            eel.update_listening_time(trackId, 1);
         }
     });
 }
@@ -614,35 +630,3 @@ async function initCharts() {
         console.error('Ошибка инициализации графиков:', error);
     }
 }
-
-
-window.addEventListener('load', () => {
-    fetch('/api/user/track', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ action: 'visit' })
-    });
-});
-
-window.addEventListener('beforeunload', () => {
-    navigator.sendBeacon('/api/user/track', JSON.stringify({ action: 'leave' }));
-});
-
-function fetchActiveUsers() {
-    fetch('/api/get_active_users')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById('activeUsers').innerText = `Активных пользователей: ${data.active_users}`;
-            }
-        })
-        .catch(error => console.error('Ошибка при получении активных пользователей:', error));
-}
-
-
-setInterval(fetchActiveUsers, 10000);
-
-
-fetchActiveUsers();

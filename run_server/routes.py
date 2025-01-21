@@ -7,10 +7,6 @@ import re
 from unicodedata import normalize
 from urllib.parse import unquote, quote
 from functools import wraps
-from collections import defaultdict
-
-# Глобальная переменная для хранения активных пользователей
-active_users = defaultdict(int)
 
 # Decorator для обработки асинхронных ответов
 def async_response(f):
@@ -237,37 +233,6 @@ def update_play_count(track_id):
         return {'success': False, 'error': 'Track not found'}
     except Exception as e:
         return {'success': False, 'error': str(e)}
-
-# Новый маршрут для отслеживания пользователей
-@route('/api/user/track', method='POST')
-def track_user():
-    try:
-        data = request.json
-        action = data.get('action')
-        
-        if action == 'visit':
-            active_users[request.remote_addr] += 1
-        elif action == 'leave':
-            if active_users[request.remote_addr] > 0:
-                active_users[request.remote_addr] -= 1
-                if active_users[request.remote_addr] == 0:
-                    del active_users[request.remote_addr]
-        else:
-            return {'success': False, 'error': 'Неверное действие'}
-        
-        return {'success': True, 'active_users': len(active_users)}
-    except Exception as e:
-        print(f"Ошибка в track_user: {str(e)}")
-        return {'success': False, 'error': str(e)}
-
-@eel.expose
-def get_active_users():
-    """Функция для получения количества активных пользователей"""
-    return {'success': True, 'active_users': len(active_users)}
-
-@route('/api/get_active_users')
-def get_active_users_route():
-    return get_active_users()
 
 @eel.expose
 def upload_files(music_data, cover_data, name, type_):
