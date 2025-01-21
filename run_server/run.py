@@ -10,4 +10,4 @@ eel.init('static', allowed_extensions=['.js', '.html', '.css', '.mp3', '.jpg', '
 routes = Routes()
 
 if __name__ == '__main__':
-    eel.start('work.html', mode="none", size=(1920, 1080), host="0.0.0.0", port=8080)
+    eel.start('work.html', mode="none", size=(1920, 1080), host="localhost", port=8080)

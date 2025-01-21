@@ -107,9 +107,35 @@ class Routes:
             print(f"Ошибка при загрузке файлов: {str(e)}")
             return {"success": False, "error": str(e)}
 
+LISTENING_STATS_FILE = os.path.join(os.path.dirname(__file__), 'listening_stats.json')
+
+def load_listening_stats():
+    if not os.path.exists(LISTENING_STATS_FILE):
+        with open(LISTENING_STATS_FILE, 'w', encoding='utf-8') as f:
+            json.dump({}, f, ensure_ascii=False, indent=4)
+    with open(LISTENING_STATS_FILE, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+def save_listening_stats(data):
+    with open(LISTENING_STATS_FILE, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+@eel.expose
+def update_listening_time(track_id, seconds):
+    try:
+        track_id = int(track_id)
+        stats = load_listening_stats()
+        # Прибавляем время для трека
+        stats[str(track_id)] = stats.get(str(track_id), 0) + seconds
+        save_listening_stats(stats)
+        return {'success': True}
+    except Exception as e:
+        return {'success': False, 'error': str(e)}
+
 @eel.expose 
 def get_all_tracks():
     try:
+        stats = load_listening_stats()
         tracks = []
         # Рекурсивно ищем все треки во всех подпапках
         for root, dirs, files in os.walk(UPLOAD_FOLDER):
@@ -120,17 +146,20 @@ def get_all_tracks():
                     # Кодируем пути файлов
                     music_path = quote(f"/static/uploads/{relative_path}/{metadata['music_file']}")
                     cover_path = quote(f"/static/uploads/{relative_path}/{metadata['cover_file']}")
+                    track_id = len(tracks)
+                    # Конвертируем секунды в минуты и округляем до 1 знака
+                    total_listening_minutes = round(stats.get(str(track_id), 0) / 60, 1)
                     track_data = {
-                        'id': len(tracks),
+                        'id': track_id,
                         'name': metadata['name'],
                         'type': metadata['type'],
                         'music_file': music_path,
                         'cover_file': cover_path,
-                        'plays': metadata.get('plays', 0)
+                        'plays': total_listening_minutes  # Теперь храним время в минутах
                     }
                     tracks.append(track_data)
         
-        # Сортируем по количеству прослушиваний
+        # Сортируем по суммарному времени прослушивания
         tracks.sort(key=lambda x: x['plays'], reverse=True)
         return {'success': True, 'tracks': tracks}
     except Exception as e:
@@ -142,8 +171,12 @@ def get_top_tracks(limit=3):
     try:
         all_tracks = get_all_tracks()
         if all_tracks['success']:
-            # Sort by plays and get top N
-            sorted_tracks = sorted(all_tracks['tracks'], key=lambda x: x['plays'], reverse=True)
+            # Фильтруем треки с plays > 0
+            filtered_tracks = [track for track in all_tracks['tracks'] if track['plays'] > 0]
+            if not filtered_tracks:
+                return {'success': True, 'tracks': []}
+            # Сортируем по plays и берем топ N
+            sorted_tracks = sorted(filtered_tracks, key=lambda x: x['plays'], reverse=True)
             return {'success': True, 'tracks': sorted_tracks[:limit]}
         return all_tracks
     except Exception as e:
@@ -158,23 +191,19 @@ def get_tracks_by_genre():
                 with open(os.path.join(root, 'metadata.json'), 'r', encoding='utf-8') as f:
                     metadata = json.load(f)
                     relative_path = os.path.relpath(root, UPLOAD_FOLDER)
-                    track_id = len(all_tracks)  # Уникальный ID для каждого трека
-                    
-                    # Добавляем plays если его нет
-                    if 'plays' not in metadata:
-                        metadata['plays'] = 0
-                        
+                    # Используем urlencode для специальных символов
+                    music_file = quote(metadata['music_file'])
+                    cover_file = quote(metadata['cover_file'])
                     track_data = {
-                        'id': track_id,
+                        'id': len(all_tracks),
                         'name': metadata['name'],
                         'type': metadata['type'],
-                        'music_file': quote(f"/static/uploads/{relative_path}/{metadata['music_file']}"),
-                        'cover_file': quote(f"/static/uploads/{relative_path}/{metadata['cover_file']}"),
-                        'plays': metadata['plays']
+                        'music_file': f"/static/uploads/{quote(relative_path)}/{music_file}",
+                        'cover_file': f"/static/uploads/{quote(relative_path)}/{cover_file}",
+                        'plays': metadata.get('plays', 0)
                     }
                     all_tracks.append(track_data)
         
-        # Группируем по жанрам
         tracks_by_genre = {}
         for track in all_tracks:
             genre = track['type']
@@ -235,6 +264,10 @@ def track_user():
 def get_active_users():
     """Функция для получения количества активных пользователей"""
     return {'success': True, 'active_users': len(active_users)}
+
+@route('/api/get_active_users')
+def get_active_users_route():
+    return get_active_users()
 
 @eel.expose
 def upload_files(music_data, cover_data, name, type_):

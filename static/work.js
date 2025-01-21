@@ -56,11 +56,13 @@ async function loadMusic() {
         mainContainer.innerHTML = '';
 
 
+        const topSection = await createTopTracksSection();
+        if (topSection) {
+            mainContainer.appendChild(topSection);
+        }
+
         const response = await eel.get_tracks_by_genre()();
         if (!response.success) return;
-
-        const topSection = createTopTracksSection(response.genres);
-        mainContainer.appendChild(topSection);
 
         Object.entries(response.genres).forEach(([genre, tracks]) => {
             if (tracks.length === 0) return;
@@ -77,11 +79,12 @@ async function loadMusic() {
     }
 }
 
-function createTopTracksSection(genres) {
-    const allTracks = Object.values(genres).flat();
-    const topTracks = allTracks
-        .sort((a, b) => b.plays - a.plays)
-        .slice(0, 3);
+async function createTopTracksSection() {
+    const response = await eel.get_top_tracks(3)();
+    if (!response.success) return '';
+
+    const topTracks = response.tracks.filter(track => track.plays > 0);
+    if (topTracks.length === 0) return '';
 
     const section = document.createElement('div');
     section.className = 'top-music-section';
@@ -91,7 +94,6 @@ function createTopTracksSection(genres) {
             ${topTracks.map(track => createTrackCard(track, true)).join('')}
         </div>
     `;
-
     return section;
 }
 
@@ -504,12 +506,11 @@ async function initCharts() {
             });
         }
 
-
         const listensResponse = await eel.get_all_tracks()();
         if (listensResponse.success) {
             const tracks = listensResponse.tracks;
             const trackNames = tracks.map(track => track.name);
-            const plays = tracks.map(track => track.plays);
+            const plays = tracks.map(track => track.plays); 
 
             const listensCtx = document.getElementById('listensChart').getContext('2d');
             new Chart(listensCtx, {
@@ -517,7 +518,7 @@ async function initCharts() {
                 data: {
                     labels: trackNames,
                     datasets: [{
-                        label: 'Прослушивания',
+                        label: 'Прослушивания (мин)',
                         data: plays,
                         backgroundColor: 'rgba(30, 144, 255, 0.2)',
                         borderColor: 'rgba(30, 144, 255, 1)',
@@ -534,12 +535,11 @@ async function initCharts() {
             });
         }
 
-
-        const topTracksResponse = await eel.get_top_tracks(10)();
+        const topTracksResponse = await eel.get_top_tracks(3)();
         if (topTracksResponse.success) {
             const topTracks = topTracksResponse.tracks;
             const topTrackNames = topTracks.map(track => track.name);
-            const topPlays = topTracks.map(track => track.plays);
+            const topPlays = topTracks.map(track => track.plays); // plays уже в минутах
 
             const tracksCtx = document.getElementById('tracksChart').getContext('2d');
             new Chart(tracksCtx, {
@@ -552,26 +552,12 @@ async function initCharts() {
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)',
-                            'rgba(199, 199, 199, 0.2)',
-                            'rgba(83, 102, 255, 0.2)',
-                            'rgba(255, 102, 255, 0.2)',
-                            'rgba(102, 255, 102, 0.2)'
+                            'rgba(255, 206, 86, 0.2)'
                         ],
                         borderColor: [
                             'rgba(255,99,132,1)',
                             'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(199, 199, 199, 1)',
-                            'rgba(83, 102, 255, 1)',
-                            'rgba(255, 102, 255, 1)',
-                            'rgba(102, 255, 102, 1)'
+                            'rgba(255, 206, 86, 1)'
                         ],
                         borderWidth: 1
                     }]
