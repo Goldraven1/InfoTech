@@ -1,8 +1,16 @@
+"""
+Модуль маршрутизации для приложения InfoTech.
+
+Этот модуль определяет HTTP-маршруты для веб-сервера,
+обрабатывает запросы и взаимодействует с базой данных.
+"""
+
 import eel
-from bottle import route, request, response, static_file
+from bottle import route, static_file, request, response
+import logging
+import json
 import os
 import base64
-import json
 import re
 from unicodedata import normalize
 from urllib.parse import unquote, quote
@@ -43,6 +51,110 @@ def normalize_filename(filename):
     return filename.strip()
 
 class Routes:
+    """
+    Класс для определения и управления маршрутами веб-приложения.
+    
+    Использует bottle и Eel для обработки HTTP-запросов и
+    взаимодействия с веб-интерфейсом.
+    """
+    
+    def __init__(self):
+        """
+        Инициализирует маршруты приложения.
+        
+        Регистрирует все необходимые обработчики URL-путей.
+        """
+        self._setup_static_routes()
+        self._setup_api_routes()
+        logging.info("Маршруты инициализированы")
+    
+    def _setup_static_routes(self):
+        """
+        Настраивает маршруты для статических файлов.
+        
+        Регистрирует обработчики для доставки HTML, CSS, JavaScript и медиафайлов.
+        """
+        @route('/static/<filepath:path>')
+        def serve_static(filepath):
+            """
+            Обрабатывает запросы к статическим файлам.
+            
+            Args:
+                filepath (str): Путь к запрашиваемому файлу
+                
+            Returns:
+                bottle.HTTPResponse: HTTP-ответ с запрошенным файлом
+            """
+            return static_file(filepath, root='./static')
+    
+    def _setup_api_routes(self):
+        """
+        Настраивает маршруты для API-запросов.
+        
+        Регистрирует обработчики для различных конечных точек API.
+        """
+        @route('/api/users', method='GET')
+        def get_users():
+            """
+            Обрабатывает GET-запросы к /api/users.
+            
+            Возвращает список пользователей в формате JSON.
+            
+            Returns:
+                str: JSON-строка со списком пользователей
+            """
+            try:
+                # В реальном приложении здесь будет обращение к БД
+                users = [
+                    {"id": 1, "name": "User 1"},
+                    {"id": 2, "name": "User 2"}
+                ]
+                response.content_type = 'application/json'
+                return json.dumps({"success": True, "users": users})
+            except Exception as e:
+                logging.error(f"Ошибка получения пользователей: {e}")
+                response.status = 500
+                return json.dumps({"success": False, "error": str(e)})
+        
+        @route('/api/users', method='POST')
+        def add_user():
+            """
+            Обрабатывает POST-запросы к /api/users.
+            
+            Создает нового пользователя на основе данных из запроса.
+            
+            Returns:
+                str: JSON-строка с результатом операции
+            """
+            try:
+                # Получаем данные из тела запроса
+                data = request.json
+                
+                # Проверяем наличие обязательных полей
+                if not data or 'name' not in data:
+                    response.status = 400
+                    return json.dumps({"success": False, "error": "Отсутствуют обязательные поля"})
+                
+                # В реальном приложении здесь будет создание пользователя в БД
+                # new_id = db.create_user(data['name'], data.get('description', ''))
+                new_id = 123  # Тестовый ID
+                
+                response.content_type = 'application/json'
+                return json.dumps({"success": True, "id": new_id})
+            except Exception as e:
+                logging.error(f"Ошибка добавления пользователя: {e}")
+                response.status = 500
+                return json.dumps({"success": False, "error": str(e)})
+        
+        # Дополнительные маршруты можно добавить здесь
+        # @route('/api/users/<user_id:int>', method='PUT')
+        # def update_user(user_id):
+        #     ...
+        #
+        # @route('/api/users/<user_id:int>', method='DELETE')
+        # def delete_user(user_id):
+        #     ...
+
     @staticmethod
     @route('/upload', method='POST')
     @async_response

@@ -1,0 +1,4 @@
+eel
+bottle
+psycopg2-binary
+prometheus_client>=0.14.1
